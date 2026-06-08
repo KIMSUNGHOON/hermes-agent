@@ -361,6 +361,152 @@ class TestSummaryFailureCooldown:
         assert mock_call.call_count == 1
 
 
+class TestSummaryTransientRetry:
+    """One retry on a transient transport error before fallback/cooldown.
+
+    Salvaged from PR #16587 (@ARegalado1). The implementation reuses the
+    canonical ``_is_connection_error`` detector plus a 5xx/408 status check
+    rather than a private error list. With ``summary_model`` unset
+    (== main model), a transient failure never reaches the fallback-to-main
+    retry path, so the in-place retry is what saves the summary.
+    """
+
+    def test_retries_incomplete_chunked_read_once(self):
+        mock_response = MagicMock()
+        mock_response.choices = [MagicMock()]
+        mock_response.choices[0].message.content = "summary after retry"
+
+        with patch("agent.context_compressor.get_model_context_length", return_value=100000):
+            c = ContextCompressor(model="test", quiet_mode=True)
+
+        messages = [
+            {"role": "user", "content": "do something"},
+            {"role": "assistant", "content": "ok"},
+        ]
+        transient = Exception(
+            "peer closed connection without sending complete message body "
+            "(incomplete chunked read)"
+        )
+
+        with patch(
+            "agent.context_compressor.call_llm",
+            side_effect=[transient, mock_response],
+        ) as mock_call:
+            summary = c._generate_summary(messages)
+
+        assert summary == f"{SUMMARY_PREFIX}\nsummary after retry"
+        assert mock_call.call_count == 2
+        assert c._last_summary_error is None
+
+    def test_retries_generic_api_connection_error_once(self):
+        class APIConnectionError(Exception):
+            pass
+
+        mock_response = MagicMock()
+        mock_response.choices = [MagicMock()]
+        mock_response.choices[0].message.content = "summary after retry"
+
+        with patch("agent.context_compressor.get_model_context_length", return_value=100000):
+            c = ContextCompressor(model="test", quiet_mode=True)
+
+        messages = [
+            {"role": "user", "content": "do something"},
+            {"role": "assistant", "content": "ok"},
+        ]
+        transient = APIConnectionError("Connection error.")
+
+        with patch(
+            "agent.context_compressor.call_llm",
+            side_effect=[transient, mock_response],
+        ) as mock_call:
+            summary = c._generate_summary(messages)
+
+        assert summary == f"{SUMMARY_PREFIX}\nsummary after retry"
+        assert mock_call.call_count == 2
+        assert c._last_summary_error is None
+
+    @pytest.mark.parametrize(
+        ("status_code", "via_response"),
+        [(408, False), (500, False), (503, True)],
+    )
+    def test_retries_transient_status_codes_once(self, status_code, via_response):
+        mock_response = MagicMock()
+        mock_response.choices = [MagicMock()]
+        mock_response.choices[0].message.content = "summary after retry"
+
+        with patch("agent.context_compressor.get_model_context_length", return_value=100000):
+            c = ContextCompressor(model="test", quiet_mode=True)
+
+        messages = [
+            {"role": "user", "content": "do something"},
+            {"role": "assistant", "content": "ok"},
+        ]
+        transient = Exception(f"HTTP {status_code}")
+        if via_response:
+            transient.response = MagicMock(status_code=status_code)
+        else:
+            transient.status_code = status_code
+
+        with patch(
+            "agent.context_compressor.call_llm",
+            side_effect=[transient, mock_response],
+        ) as mock_call:
+            summary = c._generate_summary(messages)
+
+        assert summary == f"{SUMMARY_PREFIX}\nsummary after retry"
+        assert mock_call.call_count == 2
+        assert c._last_summary_error is None
+
+    def test_does_not_retry_auth_errors(self):
+        with patch("agent.context_compressor.get_model_context_length", return_value=100000):
+            c = ContextCompressor(model="test", quiet_mode=True)
+
+        messages = [
+            {"role": "user", "content": "do something"},
+            {"role": "assistant", "content": "ok"},
+        ]
+        auth_error = Exception("unauthorized")
+        auth_error.status_code = 401
+
+        with patch("agent.context_compressor.call_llm", side_effect=auth_error) as mock_call:
+            summary = c._generate_summary(messages)
+            second = c._generate_summary(messages)
+
+        assert summary is None
+        assert second is None
+        # 401 is re-raised on the first attempt (no transient retry); the
+        # second call is suppressed by the failure cooldown.
+        assert mock_call.call_count == 1
+        assert c._last_summary_error == "unauthorized"
+
+    def test_falls_back_after_second_transient_failure(self):
+        with patch("agent.context_compressor.get_model_context_length", return_value=100000):
+            c = ContextCompressor(model="test", quiet_mode=True)
+
+        messages = [
+            {"role": "user", "content": "do something"},
+            {"role": "assistant", "content": "ok"},
+        ]
+        transient = Exception(
+            "peer closed connection without sending complete message body "
+            "(incomplete chunked read)"
+        )
+
+        with patch(
+            "agent.context_compressor.call_llm",
+            side_effect=[transient, transient],
+        ) as mock_call:
+            summary = c._generate_summary(messages)
+            second = c._generate_summary(messages)
+
+        assert summary is None
+        assert second is None
+        # First attempt + one retry = 2 calls; the second _generate_summary
+        # is suppressed by the failure cooldown.
+        assert mock_call.call_count == 2
+        assert c._last_summary_error == str(transient)
+
+
 class TestSummaryFallbackToMainModel:
     """When ``summary_model`` differs from the main model and the summary LLM
     call fails, the compressor should retry once on the main model before

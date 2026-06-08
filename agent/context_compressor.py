@@ -1230,6 +1230,54 @@ Summary generation was unavailable, so this is a best-effort deterministic fallb
         self.summary_model = ""  # empty = use main model
         self._summary_failure_cooldown_until = 0.0  # no cooldown — retry immediately
 
+    def _call_summary_llm_with_retry(
+        self, call_kwargs: Dict[str, Any], *, retry_transient: bool = True
+    ) -> Any:
+        """Call the summary LLM, retrying once on a transient transport error.
+
+        A one-off streaming-close (peer closed connection / incomplete
+        chunked read) or a 5xx/408 blip during summary generation otherwise
+        drops the summary and enters cooldown even when an immediate retry
+        would have succeeded — and the same-model case (``summary_model`` ==
+        main model) never reaches the fallback-to-main retry path in
+        ``_generate_summary``, so without this it goes straight to cooldown.
+
+        ``retry_transient`` is False when a distinct ``summary_model`` is
+        configured: in that case a transient error should fall through to the
+        existing fallback-to-main path (issue #18458) rather than retry the
+        same — possibly flaky — endpoint.
+
+        Reuses the canonical ``_is_connection_error()`` detector (shared with
+        the auxiliary client) plus a 5xx/408 status check, rather than a
+        private error list, so the two cannot drift. Errors that are not
+        transient (auth, 4xx other than 408, malformed payloads) are
+        re-raised immediately on the first attempt so the existing
+        fallback/cooldown handling in ``_generate_summary`` runs unchanged.
+        (PR #16587)
+        """
+        for attempt in range(2):
+            try:
+                return call_llm(**call_kwargs)
+            except Exception as exc:
+                if not retry_transient:
+                    raise
+                status = getattr(exc, "status_code", None) or getattr(
+                    getattr(exc, "response", None), "status_code", None
+                )
+                transient_status = isinstance(status, int) and (
+                    status == 408 or 500 <= status < 600
+                )
+                if attempt == 0 and (_is_connection_error(exc) or transient_status):
+                    logger.info(
+                        "Context compression summary transport error; "
+                        "retrying once before fallback: %s",
+                        exc,
+                    )
+                    continue
+                raise
+        # Unreachable: the loop either returns or raises on every path.
+        raise RuntimeError("summary LLM retry loop exited without a response")
+
     def _generate_summary(
         self,
         turns_to_summarize: List[Dict[str, Any]],
@@ -1439,7 +1487,21 @@ The user has requested that this compaction PRIORITISE preserving all informatio
             }
             if self.summary_model:
                 call_kwargs["model"] = self.summary_model
-            response = call_llm(**call_kwargs)
+            # Only retry in place when there is no distinct summary model to
+            # fall back to. When a separate summary_model is configured, a
+            # transient transport error should instead drop to the existing
+            # fallback-to-main path below (issue #18458) — that endpoint may
+            # be the flaky one, so switching models beats retrying the same
+            # one. The retry closes the remaining gap: the same-model case
+            # (summary_model empty / == main / already fell back) never
+            # reaches that fallback path and otherwise goes straight to
+            # cooldown.
+            _retry_transient = not (
+                self.summary_model and self.summary_model != self.model
+            )
+            response = self._call_summary_llm_with_retry(
+                call_kwargs, retry_transient=_retry_transient
+            )
             content = response.choices[0].message.content
             # Handle cases where content is not a string (e.g., dict from llama.cpp)
             if not isinstance(content, str):
