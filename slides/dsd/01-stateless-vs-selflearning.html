@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <title>Stateless vs. Self-Learning Agents</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="dark.css">
 <style>
   .stage{height:500px}
   .cbox{width:150px;height:60px;display:flex;align-items:center;gap:11px;padding:0 14px}
@@ -33,10 +33,10 @@
       <path d="M815 316 V340 H711 V362" marker-end="url(#ar)"/>
       <path d="M815 340 H919 V362" marker-end="url(#ar)"/>
       <!-- right dashed loop: gets smarter -->
-      <path class="dash" d="M995 394 H1112 V70 H890" marker-end="url(#ard)"/>
+      <path class="dash" d="M995 394 H1112 V70 H890" style="stroke:rgba(255,215,0,.5)" marker-end="url(#ard)"/>
       <defs>
         <marker id="ar" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#9aa2ac" stroke-width="1.6"/></marker>
-        <marker id="ard" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#b6505f" stroke-width="1.6"/></marker>
+        <marker id="ard" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#e8898f" stroke-width="1.6"/></marker>
       </defs>
     </svg>
 
@@ -49,36 +49,36 @@
 
     <!-- ===== LEFT ===== -->
     <div class="box blue cbox" style="left:175px;top:40px">
-      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#3f7cc4" fill="none" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg></div>
+      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#f5b942" fill="none" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg></div>
       <div class="t">You</div>
     </div>
     <div class="elabel" style="left:262px;top:118px">message</div>
     <div class="box peach cbox" style="left:175px;top:148px">
-      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#cf6f2c" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="3"/><line x1="12" y1="3.5" x2="12" y2="7"/><circle cx="12" cy="3" r="1.2" fill="#cf6f2c" stroke="none"/><circle cx="9" cy="13" r="1.3" fill="#cf6f2c" stroke="none"/><circle cx="15" cy="13" r="1.3" fill="#cf6f2c" stroke="none"/></svg></div>
+      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#f5b942" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="3"/><line x1="12" y1="3.5" x2="12" y2="7"/><circle cx="12" cy="3" r="1.2" fill="#f5b942" stroke="none"/><circle cx="9" cy="13" r="1.3" fill="#f5b942" stroke="none"/><circle cx="15" cy="13" r="1.3" fill="#f5b942" stroke="none"/></svg></div>
       <div class="t">Agent</div>
     </div>
     <div class="box green cbox" style="left:175px;top:256px">
-      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#4f9a3d" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><line x1="9" y1="12.5" x2="15" y2="12.5"/><line x1="9" y1="16" x2="14" y2="16"/></svg></div>
+      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#7fd08a" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><line x1="9" y1="12.5" x2="15" y2="12.5"/><line x1="9" y1="16" x2="14" y2="16"/></svg></div>
       <div class="t">Response</div>
     </div>
     <div class="box coral wide" style="left:145px;top:364px;display:flex;align-items:center;gap:11px;padding:0 14px">
-      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#d4542f" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#ee9077" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
       <div><div class="t" style="font-size:14px">Session ends</div><div class="d" style="margin-top:1px">Everything forgotten</div></div>
     </div>
-    <div class="elabel dash-lbl" style="left:18px;top:228px;color:#b6505f;border-color:#e6b9bf">start over</div>
+    <div class="elabel dash-lbl" style="left:18px;top:228px;color:#e8898f;border-color:rgba(232,118,96,.4)">start over</div>
 
     <!-- ===== RIGHT ===== -->
     <div class="box blue cbox" style="left:740px;top:40px">
-      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#3f7cc4" fill="none" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg></div>
+      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#f5b942" fill="none" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg></div>
       <div class="t">You</div>
     </div>
     <div class="elabel" style="left:827px;top:118px">message</div>
     <div class="box peach cbox" style="left:740px;top:148px">
-      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#cf6f2c" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="3"/><line x1="12" y1="3.5" x2="12" y2="7"/><circle cx="12" cy="3" r="1.2" fill="#cf6f2c" stroke="none"/><circle cx="9" cy="13" r="1.3" fill="#cf6f2c" stroke="none"/><circle cx="15" cy="13" r="1.3" fill="#cf6f2c" stroke="none"/></svg></div>
+      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#f5b942" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="3"/><line x1="12" y1="3.5" x2="12" y2="7"/><circle cx="12" cy="3" r="1.2" fill="#f5b942" stroke="none"/><circle cx="9" cy="13" r="1.3" fill="#f5b942" stroke="none"/><circle cx="15" cy="13" r="1.3" fill="#f5b942" stroke="none"/></svg></div>
       <div class="t">Hermes</div>
     </div>
     <div class="box green cbox" style="left:740px;top:256px">
-      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#4f9a3d" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><line x1="9" y1="12.5" x2="15" y2="12.5"/><line x1="9" y1="16" x2="14" y2="16"/></svg></div>
+      <div class="chip sm"><svg viewBox="0 0 24 24" stroke="#7fd08a" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><line x1="9" y1="12.5" x2="15" y2="12.5"/><line x1="9" y1="16" x2="14" y2="16"/></svg></div>
       <div class="t">Response</div>
     </div>
     <!-- branch boxes -->
@@ -90,7 +90,7 @@
       <div class="t" style="font-size:13.5px">Memory store</div>
       <div class="d" style="margin-top:2px">Facts, prefs, decisions</div>
     </div>
-    <div class="elabel" style="left:1052px;top:228px;color:#b6505f;border-color:#e6b9bf">gets smarter</div>
+    <div class="elabel" style="left:1052px;top:228px;color:#f5b942;border-color:rgba(245,185,66,.4)">gets smarter</div>
   </div>
 
   <div class="fbar"><span>An agent that <b>forgets</b> is just a chatbot with a fancier UI &mdash; Hermes <b>remembers</b>, and compounds.</span></div>

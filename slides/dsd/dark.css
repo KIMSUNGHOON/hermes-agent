@@ -1,0 +1,112 @@
+/* ===== Hermes deck — DARK + Hermes gold system (drop-in for style.css) ===== */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root{
+  --gold:#FFD700; --amber:#f5b942; --amber2:#e8965a; --bronze:#b8923c;
+  --bg:#0a0a0c; --paper:#16140d; --paper2:#121117;
+  --ink:#f4efe1; --ink2:#a89e83; --ink3:#76705a;
+  --line:rgba(255,255,255,.09);
+
+  /* gold-dominant tonal; only green(keep) / coral(prune) stay semantic */
+  --peach:#1a1710;   --peach-b:rgba(245,185,66,.50);  --peach-d:#f5b942;
+  --green:#101a12;   --green-b:rgba(120,200,130,.48);  --green-d:#7fd08a;
+  --yellow:#1a1710;  --yellow-b:rgba(245,185,66,.50);  --yellow-d:#f5b942;
+  --blue:#16140d;    --blue-b:rgba(255,215,0,.40);     --blue-d:#f5b942;
+  --coral:#1e1210;   --coral-b:rgba(232,118,96,.55);   --coral-d:#ee9077;
+  --purple:#16140d;  --purple-b:rgba(255,215,0,.32);   --purple-d:#d9b878;
+  --slate:#141318;   --slate-b:rgba(255,255,255,.14);  --slate-d:#aab2bd;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#000}
+
+.slide{
+  position:relative;width:1280px;height:720px;overflow:hidden;
+  background:
+    radial-gradient(760px 440px at 50% -8%, rgba(245,170,40,.15), transparent 62%),
+    radial-gradient(900px 600px at 92% 110%, rgba(255,215,0,.05), transparent 60%),
+    var(--bg);
+  font-family:'Space Grotesk','Inter',system-ui,sans-serif;color:var(--ink);
+  padding:40px 52px 0;
+}
+.slide::before{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,215,0,.026) 1px,transparent 1px),linear-gradient(90deg,rgba(255,215,0,.026) 1px,transparent 1px);
+  background-size:46px 46px;mask-image:radial-gradient(125% 115% at 50% 0%,#000 32%,transparent 80%);pointer-events:none}
+
+/* ---------- header ---------- */
+.hd{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:3}
+.hd h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:36px;line-height:1.08;letter-spacing:-.6px;color:var(--ink)}
+.hd .sb{font-size:15.5px;color:var(--ink2);margin-top:7px;font-weight:500}
+.logo{display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;font-weight:700;font-size:16px;color:#cdc6b4;white-space:nowrap;padding-top:5px}
+.logo .mk{width:21px;height:21px;border-radius:6px;background:linear-gradient(135deg,#f4b63c,#ef7d52 55%,#e0457b)}
+.logo .pink{color:#e98bb0}
+
+/* ---------- canvas ---------- */
+.stage{position:relative;z-index:2;margin-top:26px}
+
+/* ---------- boxes ---------- */
+.box{position:absolute;border-radius:14px;border:1px solid var(--line);
+  background:linear-gradient(180deg,var(--paper),#0d0c09);padding:13px 15px;
+  box-shadow:0 8px 22px rgba(0,0,0,.45)}
+.box .t{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;color:var(--ink);line-height:1.15}
+.box .d{font-size:12.5px;color:var(--ink2);line-height:1.42;margin-top:5px}
+.box .d b{color:var(--gold);font-weight:600}
+.box.center{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.box .ico{flex:0 0 auto}
+.box .hdrow{display:flex;align-items:center;gap:10px}
+
+/* colored variants → dark panel + accent border + faint glow */
+.peach{background:linear-gradient(180deg,#1b1710,#100e09);border-color:var(--peach-b);box-shadow:0 8px 22px rgba(0,0,0,.45),inset 0 0 30px rgba(245,170,40,.05)}
+.yellow{background:linear-gradient(180deg,#1b1710,#100e09);border-color:var(--yellow-b);box-shadow:0 8px 22px rgba(0,0,0,.45),inset 0 0 30px rgba(245,185,66,.05)}
+.blue{background:linear-gradient(180deg,var(--paper),#0d0c09);border-color:var(--blue-b)}
+.purple{background:linear-gradient(180deg,var(--paper),#0d0c09);border-color:var(--purple-b)}
+.green{background:linear-gradient(180deg,#0f1a12,#0a0f0a);border-color:var(--green-b);box-shadow:0 8px 22px rgba(0,0,0,.45),inset 0 0 30px rgba(120,200,130,.05)}
+.coral{background:linear-gradient(180deg,#1e1310,#100b09);border-color:var(--coral-b);box-shadow:0 8px 22px rgba(0,0,0,.45),inset 0 0 30px rgba(232,118,96,.05)}
+.slate{background:linear-gradient(180deg,var(--slate),#0e0e11);border-color:var(--slate-b)}
+.plain{background:linear-gradient(180deg,var(--paper),#0d0c09);border-color:var(--line)}
+
+/* hero / emphasis: a glowing gold panel — opt-in via .glow */
+.glow{border-color:rgba(255,215,0,.45);
+  box-shadow:0 0 0 1px rgba(255,215,0,.12),0 0 55px rgba(245,170,40,.26),inset 0 0 38px rgba(245,170,40,.06)}
+
+/* numbered step badge → gold coin */
+.step{position:absolute;z-index:5;width:30px;height:30px;border-radius:50%;
+  background:linear-gradient(180deg,#ffe98a,var(--gold) 60%,var(--amber));color:#241a02;display:grid;place-items:center;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;
+  box-shadow:0 0 16px rgba(255,215,0,.45);border:1px solid rgba(255,255,255,.25)}
+
+/* small pill label on a connector */
+.elabel{position:absolute;z-index:4;font-size:11px;font-weight:600;color:var(--ink2);
+  background:#15130c;border:1px solid var(--line);border-radius:20px;padding:2px 9px;white-space:nowrap}
+
+/* svg connector layer */
+.wires{position:absolute;inset:0;z-index:1;width:100%;height:100%;overflow:visible;pointer-events:none}
+.wires path,.wires line{fill:none;stroke:rgba(255,215,0,.34);stroke-width:2}
+.wires .dash{stroke-dasharray:6 6;stroke:rgba(232,118,96,.55)}
+
+/* icon chip */
+.chip{width:42px;height:42px;border-radius:11px;background:rgba(255,215,0,.05);border:1px solid var(--peach-b);
+  display:grid;place-items:center;flex:0 0 auto;box-shadow:inset 0 0 18px rgba(245,170,40,.06)}
+.chip.sm{width:34px;height:34px;border-radius:9px}
+.chip svg{width:24px;height:24px}
+.chip.sm svg{width:20px;height:20px}
+
+/* section column caption */
+.colhd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;text-align:center;color:var(--ink)}
+.divider{position:absolute;top:0;bottom:0;width:1px;background:repeating-linear-gradient(to bottom,rgba(255,215,0,.30) 0 8px,transparent 8px 16px)}
+
+/* footer bar */
+.fbar{position:absolute;left:0;right:0;bottom:0;z-index:3;
+  background:linear-gradient(90deg,#1a1709,#14130d);border-top:1px solid rgba(255,215,0,.22);
+  color:#e9e2cc;font-size:13.5px;font-weight:500;
+  padding:13px 52px;display:flex;align-items:center;gap:10px}
+.fbar b{color:var(--gold);font-weight:700}
+.fnote{position:absolute;right:52px;bottom:14px;z-index:3;font-size:11px;color:var(--ink3)}
+
+/* tag chips (tonal on dark) */
+.tg{display:inline-block;font-size:10.5px;font-weight:700;font-family:'Inter';
+  border-radius:6px;padding:2px 7px;margin-top:7px}
+.tg.g{background:rgba(120,200,130,.14);color:var(--green-d)}
+.tg.y{background:rgba(245,185,66,.16);color:var(--yellow-d)}
+.tg.b{background:rgba(255,215,0,.14);color:var(--amber)}
+.tg.p{background:rgba(217,184,120,.14);color:var(--purple-d)}
+.tg.c{background:rgba(232,118,96,.16);color:var(--coral-d)}
