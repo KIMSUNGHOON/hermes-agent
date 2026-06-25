@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hermes — Autonomous Coding Agent Team Control</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+  :root{
+    --gold:#FFD700; --amber:#fbbf24; --amber-d:#f59e0b; --cream:#fde68a;
+    --bg:#0a0a0a; --panel:#151515; --panel2:#101010; --line:#2a2310;
+    --muted:#9a8e6a; --text:#f3eede; --dim:#b9b09a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#000}
+  .slide{
+    position:relative;width:1280px;height:720px;color:var(--text);
+    font-family:'Space Grotesk',system-ui,sans-serif;overflow:hidden;
+    padding:34px 44px 30px;
+    background:
+      radial-gradient(900px 480px at 80% -12%, rgba(245,158,11,.15), transparent 60%),
+      radial-gradient(680px 460px at -6% 112%, rgba(255,215,0,.07), transparent 55%),
+      var(--bg);
+  }
+  .slide::before{content:"";position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,215,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,215,0,.03) 1px,transparent 1px);
+    background-size:38px 38px;mask-image:radial-gradient(120% 120% at 50% 0%, #000 30%, transparent 82%);pointer-events:none}
+
+  /* header */
+  .head{display:flex;align-items:flex-end;justify-content:space-between;position:relative;z-index:2;margin-bottom:16px}
+  .h-l{display:flex;align-items:center;gap:13px}
+  .cad{font-size:30px;color:var(--gold);text-shadow:0 0 18px rgba(255,215,0,.5)}
+  .ttl{font-size:30px;font-weight:700;letter-spacing:-.5px;
+    background:linear-gradient(180deg,var(--cream),var(--gold) 50%,var(--amber-d));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{font-size:14px;color:var(--muted);margin-top:2px;font-weight:500}
+  .h-r{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-align:right;line-height:1.6}
+  .h-r b{color:var(--gold)}
+
+  .body{position:relative;z-index:2;display:grid;grid-template-columns:1fr 372px;gap:20px}
+  .colcap{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--amber);margin-bottom:9px;text-transform:uppercase}
+
+  /* control stack */
+  .stack{display:flex;flex-direction:column;gap:8px}
+  .layer{position:relative;display:flex;align-items:center;gap:13px;
+    background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:11px;padding:10px 14px}
+  .layer.key{border-color:rgba(255,215,0,.5);background:linear-gradient(180deg,#1c1708,#120e05);box-shadow:0 0 0 1px rgba(255,215,0,.12),0 0 24px rgba(245,158,11,.10)}
+  .num{flex:0 0 auto;width:26px;height:26px;border-radius:7px;display:grid;place-items:center;
+    font-family:'JetBrains Mono',monospace;font-weight:600;font-size:13px;color:#1a1405;
+    background:linear-gradient(180deg,var(--gold),var(--amber-d))}
+  .ltxt{flex:1;min-width:0}
+  .lrow{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .lcon{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+  .lfeat{font-size:16.5px;font-weight:700;color:var(--gold)}
+  .ldesc{font-size:12.3px;color:var(--dim);line-height:1.4;margin-top:2px}
+  .ldesc b{color:var(--amber);font-weight:600}
+  .star{position:absolute;right:12px;top:9px;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--gold);border:1px solid rgba(255,215,0,.4);border-radius:5px;padding:1px 6px}
+  .arrow{height:9px;display:grid;place-items:center;color:#6b5e30;font-size:11px;line-height:1}
+
+  /* right rails */
+  .rail{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin-bottom:12px}
+  .rail h4{font-size:14px;color:var(--text);display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .rail h4 .ic{font-size:16px}
+  .rail h4 .tag{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1px;color:var(--amber);border:1px solid var(--line);border-radius:5px;padding:2px 6px}
+  .rail p{font-size:12px;color:var(--dim);line-height:1.5}
+  .rail p b{color:var(--amber);font-weight:600}
+  .feat-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  .pill{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#cdc3a3;border:1px solid var(--line);border-radius:6px;padding:3px 8px;background:#0d0d0d}
+  .pill b{color:var(--gold)}
+
+  .note{border:1px dashed #3a3115;border-radius:10px;padding:10px 13px;background:rgba(255,215,0,.03)}
+  .note h4{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;color:var(--muted);margin-bottom:6px;text-transform:uppercase}
+  .note ul{list-style:none;font-size:11.3px;color:var(--dim);line-height:1.55}
+  .note li::before{content:"▸ ";color:var(--amber)}
+
+  .foot{position:absolute;left:44px;right:44px;bottom:14px;z-index:2;display:flex;justify-content:space-between;
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#6f6648;border-top:1px solid var(--line);padding-top:8px}
+  .foot .u{color:var(--gold)}
+</style>
+</head>
+<body>
+  <div class="slide">
+    <div class="head">
+      <div class="h-l">
+        <div class="cad">☤</div>
+        <div>
+          <div class="ttl">Autonomous Coding Agent Team — on Hermes</div>
+          <div class="sub">Feature-level control, layer by layer: who claims work · what each agent may touch · where it runs</div>
+        </div>
+      </div>
+      <div class="h-r">CONTROL = <b>which feature</b><br>owns each layer</div>
+    </div>
+
+    <div class="body">
+      <!-- LEFT: control flow stack -->
+      <div>
+        <div class="colcap">Control Flow ▾ &nbsp;( work enters at top, executes at bottom )</div>
+        <div class="stack">
+
+          <div class="layer">
+            <div class="num">1</div>
+            <div class="ltxt">
+              <div class="lrow"><span class="lcon">Intake</span><span class="lfeat">Gateway · CLI · ACP server</span></div>
+              <div class="ldesc">Tasks enter from humans (<b>Telegram/Discord/Slack</b>) or external IDEs over <b>ACP</b>. One surface, many clients.</div>
+            </div>
+          </div>
+          <div class="arrow">▼</div>
+
+          <div class="layer key">
+            <span class="star">★ TEAM CONTROL SURFACE</span>
+            <div class="num">2</div>
+            <div class="ltxt">
+              <div class="lrow"><span class="lcon">Coordinate</span><span class="lfeat">Kanban board (SQLite)</span></div>
+              <div class="ldesc"><b>Atomic claims · heartbeats · dispatcher tick · per-board isolation.</b> Assigns one task → one worker across N parallel agents; reaps crashes, releases stale claims.</div>
+            </div>
+          </div>
+          <div class="arrow">▼</div>
+
+          <div class="layer">
+            <div class="num">3</div>
+            <div class="ltxt">
+              <div class="lrow"><span class="lcon">Decompose</span><span class="lfeat">Delegation / Subagents</span></div>
+              <div class="ldesc">A worker spawns <b>isolated child agents</b> (fresh context, restricted toolsets) for parallel sub-tasks; parent blocks &amp; summarizes.</div>
+            </div>
+          </div>
+          <div class="arrow">▼</div>
+
+          <div class="layer">
+            <div class="num">4</div>
+            <div class="ltxt">
+              <div class="lrow"><span class="lcon">Guardrails</span><span class="lfeat">Toolset control + Shell hooks / approval</span></div>
+              <div class="ldesc"><b>Per-agent tool restriction</b>, command allowlist, subagent auto-deny. You decide exactly what each agent can touch.</div>
+            </div>
+          </div>
+          <div class="arrow">▼</div>
+
+          <div class="layer">
+            <div class="num">5</div>
+            <div class="ltxt">
+              <div class="lrow"><span class="lcon">Isolate &amp; run</span><span class="lfeat">Terminal backends ×6</span></div>
+              <div class="ldesc">Each agent runs in its own sandbox — <b>Local · Docker · SSH · Singularity · Modal · Daytona</b>. Serverless hibernate-on-idle.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT: cross-cutting features -->
+      <div>
+        <div class="colcap">Cross-cutting Features</div>
+
+        <div class="rail">
+          <h4><span class="ic">🧠</span> Memory + Skills <span class="tag">PERSISTENCE</span></h4>
+          <p>Team gets <b>better over time</b>: cross-session recall + user model, and self-improving <b>SKILL.md</b> procedures the whole fleet reuses.</p>
+        </div>
+
+        <div class="rail">
+          <h4><span class="ic">⏰</span> Cron scheduler <span class="tag">AUTONOMY</span></h4>
+          <p>Unattended jobs spawn agents on a schedule, auto-approved, results delivered to any platform — nightly builds, audits, triage.</p>
+        </div>
+
+        <div class="rail">
+          <h4><span class="ic">🎛️</span> What you actually control</h4>
+          <div class="feat-pills">
+            <span class="pill"><b>who</b> claims a task</span>
+            <span class="pill"><b>how many</b> run at once</span>
+            <span class="pill"><b>which</b> tools per agent</span>
+            <span class="pill"><b>where</b> code executes</span>
+            <span class="pill"><b>what</b> needs approval</span>
+            <span class="pill"><b>when</b> it runs</span>
+          </div>
+        </div>
+
+        <div class="note">
+          <h4>As-is today (honest limits)</h4>
+          <ul>
+            <li>Delegation is flat (depth&nbsp;1) — orchestrator → workers</li>
+            <li>Kanban tasks independent — no enforced DAG / ordering</li>
+            <li>No built-in voting/consensus between agents</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <div>kanban_db.py · delegate_tool.py · toolsets.py · shell_hooks.py · tools/environments/* · cron/scheduler.py · acp_adapter/</div>
+      <div class="u">hermes-agent · Nous Research</div>
+    </div>
+  </div>
+</body>
+</html>
