@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>Hermes on Real Hardware</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .stage{height:500px}
+  .rc{position:absolute;display:flex;gap:13px;padding:12px 15px;align-items:flex-start}
+  .rc .chip{width:46px;height:46px}
+  .rc .chip svg{width:27px;height:27px}
+  .rc .t{font-size:16px}
+  .rc .d{font-size:12px;line-height:1.4;margin-top:4px}
+  .rc .nm{font-family:'Poppins';font-weight:800;font-size:18px;margin-right:8px}
+  .colcap2{position:absolute;font-family:'Poppins';font-weight:700;font-size:14px;color:var(--ink2)}
+  .mono{font-family:'JetBrains Mono','Inter',monospace}
+</style></head>
+<body>
+<div class="slide">
+  <div class="hd">
+    <div>
+      <h1>Hermes on Real Hardware</h1>
+      <div class="sb">Which physical resource each part of the agent actually uses</div>
+    </div>
+    <div class="logo"><span class="mk"></span>datascience<span class="pink">dojo</span></div>
+  </div>
+
+  <div class="stage">
+    <div class="divider" style="left:540px;top:24px;bottom:120px"></div>
+    <div class="colcap2" style="left:40px;top:2px">PROCESSOR &mdash; where the thinking happens</div>
+    <div class="colcap2" style="left:560px;top:2px">MEMORY &amp; STORAGE &mdash; where knowledge lives</div>
+
+    <!-- ===== LEFT: compute ===== -->
+    <!-- CPU -->
+    <div class="box peach rc" style="left:40px;top:30px;width:480px;height:108px">
+      <div class="chip"><svg viewBox="0 0 24 24" stroke="#cf6f2c" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5"/><rect x="10" y="10" width="4" height="4" rx="1"/><path d="M10 7V4M14 7V4M10 20v-3M14 20v-3M7 10H4M7 14H4M20 10h-3M20 14h-3"/></svg></div>
+      <div>
+        <div><span class="nm" style="color:var(--peach-d)">CPU</span><span class="tg c" style="margin-top:0">control plane · always-on</span></div>
+        <div class="d">Agent loop · gateway process · <b>Kanban dispatcher &amp; claims</b> · cron scheduler · tool orchestration · Python RPC. Light compute &mdash; runs on a $5 VPS.</div>
+      </div>
+    </div>
+
+    <!-- GPU -->
+    <div class="box coral rc" style="left:40px;top:148px;width:480px;height:108px">
+      <div class="chip"><svg viewBox="0 0 24 24" stroke="#d4542f" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="8.5" cy="12" r="2.6"/><circle cx="15" cy="12" r="2.6"/><path d="M5 18v3"/></svg></div>
+      <div>
+        <div><span class="nm" style="color:var(--coral-d)">GPU</span><span class="tg c">heavy inference</span></div>
+        <div class="d"><b>LLM inference</b>, embeddings, image generation, TTS / voice. By default these hit <b>provider APIs</b> (GPU is provider-side); self-host on Ollama / vLLM for a private GPU.</div>
+      </div>
+    </div>
+
+    <!-- NPU -->
+    <div class="box purple rc" style="left:40px;top:266px;width:480px;height:108px">
+      <div class="chip"><svg viewBox="0 0 24 24" stroke="#7a4fb6" fill="none" stroke-width="1.6"><rect x="6" y="6" width="12" height="12" rx="2"/><circle cx="9.5" cy="9.5" r="1.1" fill="#7a4fb6" stroke="none"/><circle cx="14.5" cy="9.5" r="1.1" fill="#7a4fb6" stroke="none"/><circle cx="12" cy="14.5" r="1.1" fill="#7a4fb6" stroke="none"/><path d="M9.5 9.5L12 14.5M14.5 9.5L12 14.5M9.5 9.5h5" stroke-linecap="round"/><path d="M12 6V3.5M6 12H3.5M20.5 12H18M12 20.5V18" stroke-linecap="round"/></svg></div>
+      <div>
+        <div><span class="nm" style="color:var(--purple-d)">NPU</span><span class="tg p">edge acceleration · optional</span></div>
+        <div class="d">On-device <b>small models &amp; voice transcription</b> on phones / Termux. Deployment-dependent &mdash; offloads light inference from the cloud, not required.</div>
+      </div>
+    </div>
+
+    <!-- ===== RIGHT: memory + storage hierarchy ===== -->
+    <!-- DRAM -->
+    <div class="box yellow rc" style="left:560px;top:30px;width:576px;height:108px">
+      <div class="chip"><svg viewBox="0 0 24 24" stroke="#cf9a14" fill="none" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M2 7h20v8H2z"/><path d="M5 15v2.5M9 15v2.5M13 15v2.5M17 15v2.5M20 15v2.5"/><path d="M6 10h2M11 10h2M16 10h2"/></svg></div>
+      <div>
+        <div><span class="nm" style="color:var(--yellow-d)">DRAM</span><span class="tg y">working memory · fast · volatile</span></div>
+        <div class="d">Active <b>context window</b>, conversation history, model <b>KV-cache / loaded weights</b>, in-flight tool results. Size-limited &mdash; the reason <span class="mono">/compress</span> &amp; trajectory compression exist.</div>
+      </div>
+    </div>
+
+    <!-- SSD -->
+    <div class="box blue rc" style="left:560px;top:148px;width:576px;height:108px">
+      <div class="chip"><svg viewBox="0 0 24 24" stroke="#3f7cc4" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="7" cy="9" r="0.6" fill="#3f7cc4" stroke="none"/><path d="M10 9h7M10 12.2h7M7 15.4h10"/></svg></div>
+      <div>
+        <div><span class="nm" style="color:var(--blue-d)">SSD</span><span class="tg b">hot persistent state · searchable</span></div>
+        <div class="d"><span class="mono">~/.hermes/</span> &mdash; <b>SQLite memory DB (FTS5)</b>, SKILL.md library, <span class="mono">kanban.db</span>, session logs, model weights at rest. Survives restarts; queried before every reply.</div>
+      </div>
+    </div>
+
+    <!-- HDD -->
+    <div class="box slate rc" style="left:560px;top:266px;width:576px;height:108px">
+      <div class="chip"><svg viewBox="0 0 24 24" stroke="#6b7682" fill="none" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.6"/><line x1="13.9" y1="13.9" x2="18.5" y2="18.5" stroke-linecap="round"/></svg></div>
+      <div>
+        <div><span class="nm" style="color:var(--slate-d)">HDD</span><span class="tg" style="background:rgba(107,118,130,.16);color:var(--slate-d)">cold bulk storage</span></div>
+        <div class="d">Archived <b>session trajectories</b>, batch-generated training datasets, backups. Rarely read, cheap per-GB &mdash; the agent's long-term cold store.</div>
+      </div>
+    </div>
+
+    <!-- ===== bottom: I/O band ===== -->
+    <div class="box green rc" style="left:40px;top:392px;width:1096px;height:64px;align-items:center">
+      <div class="chip"><svg viewBox="0 0 24 24" stroke="#4f9a3d" fill="none" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" stroke-linecap="round"/></svg></div>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <span class="nm" style="color:var(--green-d)">I/O · Network</span>
+        <span class="d" style="margin-top:0;font-size:13px">Model provider APIs &nbsp;·&nbsp; messaging gateways (Telegram / Discord / Slack…) &nbsp;·&nbsp; MCP servers &nbsp;·&nbsp; remote terminal backends (SSH / Modal / Daytona)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="fbar"><span>Hermes' memory model <b>is</b> a hardware hierarchy: context = <b>DRAM</b> → memory DB + skills = <b>SSD</b> → trajectories = <b>HDD</b>.</span></div>
+  <div class="fnote">Hermes Agent · Nous Research · design ref: datasciencedojo</div>
+</div>
+</body></html>
