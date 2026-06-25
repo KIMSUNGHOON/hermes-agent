@@ -118,7 +118,7 @@
             <div class="num">3</div>
             <div class="ltxt">
               <div class="lrow"><span class="lcon">Decompose</span><span class="lfeat">Delegation / Subagents</span></div>
-              <div class="ldesc">A worker spawns <b>isolated child agents</b> (fresh context, restricted toolsets) for parallel sub-tasks; parent blocks &amp; summarizes.</div>
+              <div class="ldesc">Spawns <b>isolated, short-lived workers</b> — each a focused context, one toolset, one goal. Orchestrator delegates &amp; synthesizes results.</div>
             </div>
           </div>
           <div class="arrow">▼</div>
@@ -153,8 +153,8 @@
         </div>
 
         <div class="rail">
-          <h4><span class="ic">⏰</span> Cron scheduler <span class="tag">AUTONOMY</span></h4>
-          <p>Unattended jobs spawn agents on a schedule, auto-approved, results delivered to any platform — nightly builds, audits, triage.</p>
+          <h4><span class="ic">⏰</span> Cron + job chaining <span class="tag">AUTONOMY</span></h4>
+          <p>Scheduled agents, auto-approved, fresh session per run. Chain jobs via <b>context_from</b> → real pipelines: <b>collect → analyze → deliver</b>.</p>
         </div>
 
         <div class="rail">
@@ -173,8 +173,8 @@
           <h4>As-is today (honest limits)</h4>
           <ul>
             <li>Delegation is flat (depth&nbsp;1) — orchestrator → workers</li>
-            <li>Kanban tasks independent — no enforced DAG / ordering</li>
-            <li>No built-in voting/consensus between agents</li>
+            <li>Pipelines via cron job-chaining, not a general DAG engine</li>
+            <li>No built-in voting / consensus between agents</li>
           </ul>
         </div>
       </div>
