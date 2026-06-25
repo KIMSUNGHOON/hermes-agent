@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>Hermes Agent — One Orchestrator (dark)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+  :root{
+    --gold:#FFD700; --amber:#f5b942; --amber2:#e8965a; --bronze:#b8923c;
+    --bg:#0a0a0c; --p1:#16140d; --p2:#121117;
+    --bd:rgba(255,215,0,.18); --bd2:rgba(255,255,255,.07);
+    --txt:#f4efe1; --muted:#a89e83; --dim:#76705a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#000}
+  .slide{position:relative;width:1280px;height:720px;overflow:hidden;
+    background:
+      radial-gradient(720px 420px at 50% -6%, rgba(245,170,40,.16), transparent 62%),
+      radial-gradient(900px 600px at 92% 108%, rgba(255,215,0,.06), transparent 60%),
+      var(--bg);
+    font-family:'Space Grotesk',system-ui,sans-serif;color:var(--txt);padding:38px 50px 0}
+  .slide::before{content:"";position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,215,0,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,215,0,.028) 1px,transparent 1px);
+    background-size:46px 46px;mask-image:radial-gradient(120% 110% at 50% 0%,#000 30%,transparent 78%);pointer-events:none}
+
+  .hd{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:3}
+  .hd h1{font-weight:700;font-size:33px;letter-spacing:-.5px;line-height:1.1}
+  .hd h1 .g{background:linear-gradient(180deg,#fff3c4,var(--gold) 55%,var(--amber2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hd .sb{font-size:14.5px;color:var(--muted);margin-top:6px;font-weight:500}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px;color:#cdc6b4;white-space:nowrap;padding-top:5px;font-family:'Inter'}
+  .logo .mk{width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,#f4b63c,#ef7d52 55%,#e0457b)}
+  .logo .pink{color:#e98bb0}
+
+  .stage{position:relative;z-index:2;margin-top:22px;height:520px}
+  .mono{font-family:'JetBrains Mono',monospace}
+
+  .panel{position:absolute;border:1px solid var(--bd2);border-radius:16px;background:linear-gradient(180deg,var(--p1),#0d0c09)}
+  .zlabel{font-family:'Inter';font-weight:700;font-size:11px;letter-spacing:2px;color:var(--bronze)}
+
+  /* rails */
+  .rail{padding:15px 15px}
+  .rcard{border:1px solid var(--bd2);border-radius:10px;padding:8px 11px;margin-top:9px;background:rgba(255,255,255,.015)}
+  .rcard .rt{font-weight:600;font-size:13.5px;color:var(--txt)}
+  .rcard .rs{font-size:10.5px;color:var(--muted);margin-top:2px}
+  .railnote{font-size:11px;color:var(--dim);line-height:1.45;margin-top:12px}
+
+  /* intake / bands */
+  .band{position:absolute;border:1px solid var(--bd2);border-radius:13px;background:linear-gradient(180deg,var(--p2),#0c0b0e);
+    display:flex;align-items:center;gap:13px;padding:0 18px}
+  .band .bl{font-weight:600;font-size:14.5px;color:var(--txt)}
+  .band .bs{font-size:12px;color:var(--muted)}
+
+  /* hero hub */
+  .hero{position:absolute;border-radius:18px;border:1.5px solid rgba(255,215,0,.45);
+    background:radial-gradient(120% 140% at 50% 0%, rgba(245,170,40,.20), rgba(22,20,13,.96) 70%);
+    box-shadow:0 0 0 1px rgba(255,215,0,.12), 0 0 60px rgba(245,170,40,.28), inset 0 0 40px rgba(245,170,40,.06);
+    padding:14px 18px}
+  .hero .htop{display:flex;align-items:center;gap:13px}
+  .hero .hname{font-weight:700;font-size:21px;letter-spacing:-.3px}
+  .hero .hname .g{color:var(--gold);text-shadow:0 0 18px rgba(255,215,0,.5)}
+  .hero .hsub{font-size:12.5px;color:var(--muted);margin-top:1px}
+  .cad{font-size:26px;color:var(--gold);text-shadow:0 0 16px rgba(255,215,0,.6)}
+
+  .prims{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:13px}
+  .prim{border:1px solid var(--bd);border-radius:10px;padding:8px 10px;background:rgba(255,215,0,.035)}
+  .prim .pt{font-weight:600;font-size:13px;color:var(--gold);display:flex;align-items:center;gap:6px}
+  .prim .ps{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.3}
+  .prim svg{width:15px;height:15px}
+
+  /* workers */
+  .wrap-w{position:absolute;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .wk{border:1px solid var(--bd2);border-radius:12px;background:linear-gradient(180deg,#141207,#0e0d0a);
+    padding:10px 8px;text-align:center;position:relative}
+  .wk .wi{width:30px;height:30px;border-radius:8px;border:1px solid var(--bd);margin:0 auto 6px;display:grid;place-items:center;background:rgba(255,215,0,.05)}
+  .wk .wi svg{width:17px;height:17px}
+  .wk .wt{font-weight:600;font-size:13px;color:var(--txt)}
+  .wk .ws{font-size:9.5px;color:var(--dim);margin-top:1px}
+  .wk.ext .wt{color:var(--amber)}
+
+  /* hardware chips */
+  .hw{display:inline-flex;flex-direction:column;align-items:center}
+  .hw b{font-weight:700;font-size:13px;color:var(--gold)}
+  .hw span{font-size:9.5px;color:var(--muted);margin-top:1px}
+
+  .wires{position:absolute;inset:0;z-index:1;width:100%;height:100%;overflow:visible;pointer-events:none}
+  .wires path,.wires line{fill:none;stroke:rgba(255,215,0,.34);stroke-width:1.6}
+  .wires .d{stroke-dasharray:5 5;stroke:rgba(245,170,40,.5)}
+
+  .fbar{position:absolute;left:0;right:0;bottom:0;z-index:3;background:linear-gradient(90deg,#1a1709,#14130d);
+    border-top:1px solid var(--bd);color:#e9e2cc;font-size:13px;font-weight:500;padding:12px 50px}
+  .fbar b{color:var(--gold);font-weight:700}
+  .fnote{position:absolute;right:50px;bottom:13px;z-index:4;font-size:10.5px;color:var(--dim)}
+</style></head>
+<body>
+<div class="slide">
+  <div class="hd">
+    <div>
+      <h1>Hermes Agent: One <span class="g">Orchestrator</span>, End to End</h1>
+      <div class="sb">A single AIAgent object coordinates interfaces, tasks, workers, execution &amp; state — the same loop everywhere</div>
+    </div>
+    <div class="logo"><span class="mk"></span>datascience<span class="pink">dojo</span></div>
+  </div>
+
+  <div class="stage">
+    <svg class="wires" viewBox="0 0 1176 520" preserveAspectRatio="none">
+      <line x1="588" y1="58" x2="588" y2="86" marker-end="url(#a)"/>
+      <line x1="588" y1="250" x2="588" y2="286"/>
+      <line x1="329" y1="286" x2="847" y2="286"/>
+      <line x1="329" y1="286" x2="329" y2="300" marker-end="url(#a)"/>
+      <line x1="502" y1="286" x2="502" y2="300" marker-end="url(#a)"/>
+      <line x1="674" y1="286" x2="674" y2="300" marker-end="url(#a)"/>
+      <line x1="847" y1="286" x2="847" y2="300" marker-end="url(#a)"/>
+      <line x1="588" y1="378" x2="588" y2="406" marker-end="url(#a)"/>
+      <line x1="588" y1="456" x2="588" y2="476" marker-end="url(#a)"/>
+      <line class="d" x1="232" y1="180" x2="288" y2="180" marker-start="url(#a)" marker-end="url(#a)"/>
+      <line class="d" x1="888" y1="180" x2="944" y2="180" marker-start="url(#a)" marker-end="url(#a)"/>
+      <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6.5,3 L0,6" fill="none" stroke="rgba(255,215,0,.6)" stroke-width="1.5"/></marker></defs>
+    </svg>
+
+    <!-- LEFT RAIL: STATE -->
+    <div class="panel rail" style="left:36px;top:78px;width:196px;height:300px">
+      <div class="zlabel">STATE</div>
+      <div class="rcard"><div class="rt">Memory</div><div class="rs mono">SQLite + FTS5 · on SSD</div></div>
+      <div class="rcard"><div class="rt">Skills</div><div class="rs mono">SKILL.md library</div></div>
+      <div class="rcard"><div class="rt">User model</div><div class="rs">Honcho dialectic</div></div>
+      <div class="railnote">The <b style="color:var(--amber)">learning loop</b> — compounds every session.</div>
+    </div>
+
+    <!-- RIGHT RAIL: MODELS -->
+    <div class="panel rail" style="left:944px;top:78px;width:196px;height:300px">
+      <div class="zlabel">MODELS</div>
+      <div class="rcard"><div class="rt">Any provider</div><div class="rs">300+ models · no lock-in</div></div>
+      <div class="railnote mono" style="color:var(--muted);font-size:11px;line-height:1.9">▸ Nous Portal<br>▸ OpenRouter<br>▸ OpenAI · Codex<br>▸ Ollama / local</div>
+      <div class="railnote">Switch with <span class="mono" style="color:var(--amber)">one command</span>.</div>
+    </div>
+
+    <!-- INTAKE -->
+    <div class="band" style="left:250px;top:18px;width:676px;height:42px">
+      <svg width="19" height="19" viewBox="0 0 24 24" stroke="var(--gold)" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-4 4V5z"/></svg>
+      <div><span class="bl">Interfaces — Gateway</span> <span class="bs">&nbsp;Telegram · Discord · Slack · WhatsApp · CLI · ACP / IDE</span></div>
+    </div>
+
+    <!-- HERO ORCHESTRATOR -->
+    <div class="hero" style="left:250px;top:86px;width:676px;height:160px">
+      <div class="htop">
+        <span class="cad">☤</span>
+        <div><div class="hname">HERMES AGENT — <span class="g">the orchestrator</span></div>
+        <div class="hsub">one <span class="mono">AIAgent</span> object · one loop across CLI, chat, cron &amp; IDE</div></div>
+      </div>
+      <div class="prims">
+        <div class="prim"><div class="pt"><svg viewBox="0 0 24 24" stroke="#FFD700" fill="none" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="4" width="5" height="16" rx="1.3"/><rect x="9.5" y="4" width="5" height="11" rx="1.3"/><rect x="16" y="4" width="5" height="14" rx="1.3"/></svg>Kanban</div><div class="ps">claim &amp; assign</div></div>
+        <div class="prim"><div class="pt"><svg viewBox="0 0 24 24" stroke="#FFD700" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v6M12 10L6 16M12 10l6 6"/><circle cx="12" cy="4" r="1.6"/><circle cx="6" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/></svg>Delegation</div><div class="ps">spawn subagents</div></div>
+        <div class="prim"><div class="pt"><svg viewBox="0 0 24 24" stroke="#FFD700" fill="none" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M9 2h6"/></svg>Cron</div><div class="ps">schedule &amp; chain</div></div>
+        <div class="prim"><div class="pt"><svg viewBox="0 0 24 24" stroke="#FFD700" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg>Guardrails</div><div class="ps">toolset · approval</div></div>
+      </div>
+    </div>
+
+    <!-- WORKERS -->
+    <div class="wrap-w" style="left:250px;top:300px;width:676px;height:74px">
+      <div class="wk"><div class="wi"><svg viewBox="0 0 24 24" stroke="#FFD700" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="3"/><line x1="12" y1="3.5" x2="12" y2="7"/><circle cx="9" cy="13" r="1.1" fill="#FFD700" stroke="none"/><circle cx="15" cy="13" r="1.1" fill="#FFD700" stroke="none"/></svg></div><div class="wt">Subagents</div><div class="ws mono">internal</div></div>
+      <div class="wk ext"><div class="wi"><svg viewBox="0 0 24 24" stroke="#f5b942" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3"/><line x1="12.5" y1="15" x2="17" y2="15"/></svg></div><div class="wt">Codex</div><div class="ws">OpenAI</div></div>
+      <div class="wk ext"><div class="wi"><svg viewBox="0 0 24 24" stroke="#f5b942" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3"/><line x1="12.5" y1="15" x2="17" y2="15"/></svg></div><div class="wt">OpenCode</div><div class="ws">open source</div></div>
+      <div class="wk ext"><div class="wi"><svg viewBox="0 0 24 24" stroke="#f5b942" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3"/><line x1="12.5" y1="15" x2="17" y2="15"/></svg></div><div class="wt">Claude Code</div><div class="ws">Anthropic</div></div>
+    </div>
+    <div style="position:absolute;left:588px;top:280px;transform:translateX(-50%);font-size:10px;letter-spacing:1px;color:var(--bronze);font-family:'Inter';font-weight:700">WORKERS</div>
+
+    <!-- EXECUTION -->
+    <div class="band" style="left:250px;top:406px;width:676px;height:44px">
+      <svg width="19" height="19" viewBox="0 0 24 24" stroke="var(--gold)" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+      <div><span class="bl">Execution — terminal backends</span> <span class="bs">&nbsp;Local · Docker · SSH · Singularity · Modal · Daytona</span></div>
+    </div>
+
+    <!-- HARDWARE -->
+    <div class="band" style="left:36px;top:476px;width:1104px;height:50px;gap:22px">
+      <span class="bl" style="white-space:nowrap;color:var(--gold)">Hardware</span>
+      <span class="hw"><b>CPU</b><span>control plane</span></span>
+      <span class="hw"><b>GPU / NPU</b><span>inference</span></span>
+      <span class="hw"><b>DRAM</b><span>context</span></span>
+      <span class="hw"><b>SSD</b><span>memory + skills</span></span>
+      <span class="hw"><b>HDD</b><span>archive</span></span>
+      <span class="bs" style="margin-left:auto">$5 VPS → GPU cluster · serverless when idle</span>
+    </div>
+  </div>
+
+  <div class="fbar"><span>Everything routes through <b>one agent</b> — interfaces in, tasks scheduled, workers spawned, code run on real hardware, state that <b>compounds</b>.</span></div>
+  <div class="fnote">map of slides 01–07</div>
+</div>
+</body></html>
