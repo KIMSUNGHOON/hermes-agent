@@ -145,6 +145,7 @@ Panel radius 14px · pill/coin radius 50% · chip radius 11px
 | # | Title | One-line role | Hero / layout |
 |---|---|---|---|
 | 00 | **One Orchestrator, End to End** | Visual TOC; one agent over all zones | Glowing central hub + intake/workers/exec/hw bands + state/model rails |
+| 00b | **The Hermes Stack — Top to Bottom** | Same system as a top-down feature stack | 7 stacked layer bands (interfaces→hardware), glow on orchestrator, flow rail + cross-cutting models rail |
 | 01 | Stateless vs. Self-Learning Agents | The *why*: memory = agent vs chatbot | Two-column compare (`.colhd` + `.divider`) |
 | 02 | The Hermes Learning Loop | 3 systems that compound | Cyclic loop, 3 nodes, `.step` coins |
 | 03 | How Hermes Manages Memory | extract → store → retrieve | Left→right pipeline, `.step` 1·2·3 |

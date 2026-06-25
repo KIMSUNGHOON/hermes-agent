@@ -21,7 +21,26 @@ matches the gold `<b>` accent on the slide. Target ~60–75 s each; the deck run
 >
 > The rest of this deck just zooms into one of these boxes."
 
-**→ Next:** "Start with *why* state matters at all."
+**→ Next:** "Same system, one more way to see it — as a stack, top to bottom."
+
+---
+
+## 00b · The Hermes Stack — Top to Bottom  *(layered view)*
+
+> "If the last slide was the map, this is the **stack** — the same system read top-down, the
+> way a request actually travels.
+>
+> A request enters at the top through an **interface** — chat, CLI, or IDE. It drops into the
+> one **orchestrator**, the single AIAgent loop that routes everything. From there it uses
+> the **primitives** to coordinate, hands off to **workers** to do the job, leans on the
+> **state** layer so it keeps getting smarter, runs on an **execution** backend, and finally
+> resolves all the way down to **hardware**. Off to the side, **models** are cross-cutting —
+> any provider, no lock-in, feeding the orchestrator and workers. Results bubble back up the
+> same stack.
+>
+> The whole point: it's **one vertical path**, and every layer reuses the same primitives."
+
+**→ Next:** "Now zoom in — and start with *why* the state layer matters at all."
 
 ---
 
@@ -158,6 +177,6 @@ state — still **one agent, one loop**." *(return to slide 00)*
 
 ### Presenter cheat-sheet (bold keyword per slide)
 
-`00` one orchestrator · `01` remembers, and compounds · `02` better it knows you ·
+`00` one orchestrator · `00b` one vertical path · `01` remembers, and compounds · `02` better it knows you ·
 `03` on disk — no lock-in · `04` kept, rewritten, or pruned · `05` which feature owns each
 layer · `06` hardware hierarchy · `07` another worker.
