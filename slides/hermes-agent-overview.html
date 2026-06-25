@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hermes Agent — Overview Slide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root{
+    --gold:#FFD700;
+    --amber:#fbbf24;
+    --amber-d:#f59e0b;
+    --cream:#fde68a;
+    --bg:#0a0a0a;
+    --panel:#141414;
+    --panel-b:#262011;
+    --muted:#9a8e6a;
+    --text:#f3eede;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#000}
+  .slide{
+    position:relative;
+    width:1280px;height:720px;
+    background:
+      radial-gradient(900px 500px at 78% -10%, rgba(245,158,11,.16), transparent 60%),
+      radial-gradient(700px 500px at -5% 110%, rgba(255,215,0,.08), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Space Grotesk',system-ui,sans-serif;
+    overflow:hidden;
+    padding:48px 56px 40px;
+  }
+  /* faint circuit grid */
+  .slide::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(255,215,0,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,215,0,.035) 1px,transparent 1px);
+    background-size:40px 40px;
+    mask-image:radial-gradient(120% 120% at 50% 0%, #000 35%, transparent 80%);
+    pointer-events:none;
+  }
+
+  /* ---- Header ---- */
+  .head{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:2}
+  .brand{display:flex;align-items:center;gap:18px}
+  .cad{
+    font-size:54px;line-height:1;
+    color:var(--gold);
+    text-shadow:0 0 22px rgba(255,215,0,.55);
+  }
+  .title{
+    font-size:52px;font-weight:700;letter-spacing:-1px;
+    background:linear-gradient(180deg,var(--cream),var(--gold) 45%,var(--amber-d));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .sub{margin-top:4px;font-size:18px;color:var(--muted);font-weight:500}
+  .by{
+    text-align:right;font-family:'JetBrains Mono',monospace;
+    font-size:13px;color:var(--muted);line-height:1.7;padding-top:8px;
+  }
+  .by b{color:var(--gold)}
+
+  /* ---- Hero line ---- */
+  .hero{
+    position:relative;z-index:2;margin:26px 0 22px;
+    font-size:27px;font-weight:600;line-height:1.32;max-width:1000px;
+  }
+  .hero .hl{color:var(--gold)}
+  .loop-tag{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;
+    color:var(--amber);border:1px solid rgba(255,215,0,.35);
+    background:rgba(255,215,0,.06);border-radius:999px;padding:5px 13px;
+    margin-bottom:14px;letter-spacing:.5px;
+  }
+  .loop-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+
+  /* ---- Pillars ---- */
+  .grid{
+    position:relative;z-index:2;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  }
+  .card{
+    background:linear-gradient(180deg,var(--panel),#0e0e0e);
+    border:1px solid var(--panel-b);
+    border-radius:14px;padding:18px 18px 16px;
+    position:relative;overflow:hidden;
+  }
+  .card::after{
+    content:"";position:absolute;left:0;top:0;height:100%;width:3px;
+    background:linear-gradient(180deg,var(--gold),var(--amber-d));
+    opacity:.85;
+  }
+  .ic{font-size:24px;margin-bottom:9px;display:block}
+  .ct{font-size:18px;font-weight:700;color:var(--text);margin-bottom:5px}
+  .cd{font-size:13.5px;line-height:1.5;color:#b9b09a}
+  .cd b{color:var(--amber);font-weight:600}
+
+  /* ---- Footer strip ---- */
+  .foot{
+    position:absolute;left:56px;right:56px;bottom:28px;z-index:2;
+    display:flex;align-items:center;justify-content:space-between;
+    border-top:1px solid var(--panel-b);padding-top:14px;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--muted);
+  }
+  .foot .chips{display:flex;gap:10px;flex-wrap:wrap}
+  .chip{border:1px solid var(--panel-b);border-radius:7px;padding:4px 10px;color:#c9bf9f}
+  .chip b{color:var(--gold)}
+  .foot .url{color:var(--gold)}
+</style>
+</head>
+<body>
+  <div class="slide">
+    <div class="head">
+      <div class="brand">
+        <div class="cad">☤</div>
+        <div>
+          <div class="title">Hermes Agent</div>
+          <div class="sub">The self-improving AI agent · open source · model-agnostic</div>
+        </div>
+      </div>
+      <div class="by">built by <b>Nous Research</b><br>MIT · agentskills.io</div>
+    </div>
+
+    <div class="hero">
+      <div class="loop-tag"><span class="dot"></span>CLOSED LEARNING LOOP</div><br>
+      The only agent that <span class="hl">learns from experience</span> — it writes its own skills,
+      remembers who you are across sessions, and gets better the more you use it.
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <span class="ic">🔁</span>
+        <div class="ct">Self-improving</div>
+        <div class="cd">Creates <b>skills from experience</b>, refines them in use, and curates its own memory with periodic nudges.</div>
+      </div>
+      <div class="card">
+        <span class="ic">🧠</span>
+        <div class="ct">Persistent memory</div>
+        <div class="cd">FTS5 search over <b>past conversations</b> + dialectic user modeling — a deepening picture of you.</div>
+      </div>
+      <div class="card">
+        <span class="ic">💬</span>
+        <div class="ct">Lives where you do</div>
+        <div class="cd">Telegram, Discord, Slack, WhatsApp, Signal &amp; CLI from <b>one gateway</b> — with voice transcription.</div>
+      </div>
+      <div class="card">
+        <span class="ic">🔌</span>
+        <div class="ct">Any model, no lock-in</div>
+        <div class="cd">Nous Portal, OpenRouter, OpenAI &amp; more — <b>300+ models</b>, switch with one command.</div>
+      </div>
+      <div class="card">
+        <span class="ic">⏰</span>
+        <div class="ct">Runs unattended</div>
+        <div class="cd">Built-in <b>cron + subagents</b>. Daily reports and nightly jobs in plain natural language.</div>
+      </div>
+      <div class="card">
+        <span class="ic">☁️</span>
+        <div class="ct">Runs anywhere</div>
+        <div class="cd">Six backends — local, Docker, SSH, Modal, Daytona. <b>$5 VPS to GPU cluster</b>, serverless when idle.</div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <div class="chips">
+        <span class="chip"><b>40+</b> tools</span>
+        <span class="chip"><b>300+</b> models</span>
+        <span class="chip"><b>6</b> chat platforms</span>
+        <span class="chip"><b>6</b> runtimes</span>
+      </div>
+      <div class="url">hermes-agent.nousresearch.com</div>
+    </div>
+  </div>
+</body>
+</html>
