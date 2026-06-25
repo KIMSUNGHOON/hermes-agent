@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>Building an Autonomous Coding Agent Team</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .stage{height:500px}
+  .wlabel{position:absolute;font-size:10.5px;font-weight:600;color:var(--ink2)}
+  .pill2{display:inline-block;font-size:11px;font-weight:600;color:#444;background:#fff;border:1px solid var(--line);border-radius:20px;padding:4px 10px;margin:0 5px 7px 0}
+  .pill2 b{color:var(--peach-d)}
+  .star{position:absolute;font-size:10px;font-weight:700;color:#cf6f2c;background:#fff;border:1px solid var(--peach-b);border-radius:6px;padding:2px 7px}
+</style></head>
+<body>
+<div class="slide">
+  <div class="hd">
+    <div>
+      <h1>Building an Autonomous Coding Agent Team</h1>
+      <div class="sb">Feature-level control: who claims work &middot; what each agent may touch &middot; where it runs</div>
+    </div>
+    <div class="logo"><span class="mk"></span>datascience<span class="pink">dojo</span></div>
+  </div>
+
+  <div class="stage">
+    <svg class="wires" viewBox="0 0 1176 500" preserveAspectRatio="none">
+      <line x1="290" y1="72" x2="290" y2="92" marker-end="url(#a)"/>
+      <!-- kanban fan to workers -->
+      <path d="M290 160 C290 178 119 172 119 190" marker-end="url(#a)"/>
+      <line x1="290" y1="160" x2="290" y2="190" marker-end="url(#a)"/>
+      <path d="M290 160 C290 178 461 172 461 190" marker-end="url(#a)"/>
+      <!-- workers converge to guardrails -->
+      <path d="M119 262 C119 282 290 286 290 300" marker-end="url(#a)"/>
+      <line x1="290" y1="262" x2="290" y2="300" marker-end="url(#a)"/>
+      <path d="M461 262 C461 282 290 286 290 300" marker-end="url(#a)"/>
+      <line x1="290" y1="358" x2="290" y2="386" marker-end="url(#a)"/>
+      <defs><marker id="a" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#9aa2ac" stroke-width="1.6"/></marker></defs>
+    </svg>
+
+    <!-- vertical divider -->
+    <div class="divider" style="left:578px"></div>
+
+    <!-- 1 INTAKE -->
+    <div class="step" style="left:8px;top:30px">1</div>
+    <div class="box slate" style="left:40px;top:16px;width:500px;height:56px;padding:8px 16px 8px 30px">
+      <div class="hdrow"><div class="chip sm"><svg viewBox="0 0 24 24" stroke="#6b7682" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-4 4V5z"/></svg></div><div><div class="t" style="font-size:15px">Intake &mdash; Gateway · CLI · ACP</div><div class="d" style="margin-top:1px">Work enters from chat platforms or an external IDE</div></div></div>
+    </div>
+
+    <!-- 2 KANBAN -->
+    <div class="step" style="left:8px;top:118px">2</div>
+    <span class="star" style="left:404px;top:100px">★ TEAM CONTROL</span>
+    <div class="box peach" style="left:40px;top:94px;width:500px;height:66px;padding:9px 16px 9px 30px">
+      <div class="hdrow"><div class="chip sm"><svg viewBox="0 0 24 24" stroke="#cf6f2c" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="5.5" height="16" rx="1.5"/><rect x="9.5" y="4" width="5.5" height="11" rx="1.5"/><rect x="16" y="4" width="5.5" height="14" rx="1.5"/></svg></div><div><div class="t" style="font-size:15px">Kanban board (SQLite)</div><div class="d" style="margin-top:1px">Atomic claims · heartbeats · dispatcher assigns <b>one task → one worker</b>; reaps crashes</div></div></div>
+    </div>
+
+    <!-- 3 WORKERS -->
+    <div class="step" style="left:8px;top:212px">3</div>
+    <div class="wlabel" style="left:46px;top:172px">Delegation &mdash; isolated, parallel subagents</div>
+    <div class="box green center" style="left:40px;top:190px;width:158px;height:72px;padding:8px">
+      <div class="hdrow"><div class="chip sm"><svg viewBox="0 0 24 24" stroke="#4f9a3d" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="3"/><line x1="12" y1="3.5" x2="12" y2="7"/><circle cx="9" cy="13" r="1.2" fill="#4f9a3d" stroke="none"/><circle cx="15" cy="13" r="1.2" fill="#4f9a3d" stroke="none"/></svg></div><div class="t" style="font-size:13.5px">Worker A</div></div>
+      <div class="d" style="margin-top:4px;text-align:center">focused context · one goal</div>
+    </div>
+    <div class="box green center" style="left:211px;top:190px;width:158px;height:72px;padding:8px">
+      <div class="hdrow"><div class="chip sm"><svg viewBox="0 0 24 24" stroke="#4f9a3d" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="3"/><line x1="12" y1="3.5" x2="12" y2="7"/><circle cx="9" cy="13" r="1.2" fill="#4f9a3d" stroke="none"/><circle cx="15" cy="13" r="1.2" fill="#4f9a3d" stroke="none"/></svg></div><div class="t" style="font-size:13.5px">Worker B</div></div>
+      <div class="d" style="margin-top:4px;text-align:center">one restricted toolset</div>
+    </div>
+    <div class="box green center" style="left:382px;top:190px;width:158px;height:72px;padding:8px">
+      <div class="hdrow"><div class="chip sm"><svg viewBox="0 0 24 24" stroke="#4f9a3d" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="3"/><line x1="12" y1="3.5" x2="12" y2="7"/><circle cx="9" cy="13" r="1.2" fill="#4f9a3d" stroke="none"/><circle cx="15" cy="13" r="1.2" fill="#4f9a3d" stroke="none"/></svg></div><div class="t" style="font-size:13.5px">Worker C</div></div>
+      <div class="d" style="margin-top:4px;text-align:center">parent synthesizes</div>
+    </div>
+
+    <!-- 4 GUARDRAILS -->
+    <div class="step" style="left:8px;top:322px">4</div>
+    <div class="box yellow" style="left:40px;top:300px;width:500px;height:56px;padding:8px 16px 8px 30px">
+      <div class="hdrow"><div class="chip sm"><svg viewBox="0 0 24 24" stroke="#cf9a14" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><div><div class="t" style="font-size:15px">Guardrails &mdash; toolset control + approval allowlist</div><div class="d" style="margin-top:1px">You set <b>exactly which tools</b> each agent may call; subagents auto-deny dangerous commands</div></div></div>
+    </div>
+
+    <!-- 5 SANDBOX -->
+    <div class="step" style="left:8px;top:408px">5</div>
+    <div class="box blue" style="left:40px;top:386px;width:500px;height:56px;padding:8px 16px 8px 30px">
+      <div class="hdrow"><div class="chip sm"><svg viewBox="0 0 24 24" stroke="#3f7cc4" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><line x1="3" y1="20" x2="21" y2="20"/></svg></div><div><div class="t" style="font-size:15px">Isolated execution &mdash; terminal backends ×6</div><div class="d" style="margin-top:1px">Local · Docker · SSH · Singularity · Modal · Daytona — each agent in its own sandbox</div></div></div>
+    </div>
+
+    <!-- SIDE PANEL -->
+    <div class="box plain" style="left:606px;top:16px;width:540px;height:120px;padding:13px 16px">
+      <div class="hdrow"><div class="chip sm"><svg viewBox="0 0 24 24" stroke="#7a4fb6" fill="none" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l8 4-8 4-8-4 8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16.5l8 4 8-4"/></svg></div><div class="t">Memory + Skills <span style="font-size:11px;color:var(--purple-d);font-weight:600">— the team compounds</span></div></div>
+      <div class="d" style="margin-top:8px;font-size:13px">Shared, self-improving <b>SKILL.md</b> procedures plus cross-session recall — every agent inherits what the fleet already learned.</div>
+    </div>
+
+    <div class="box plain" style="left:606px;top:150px;width:540px;height:120px;padding:13px 16px">
+      <div class="hdrow"><div class="chip sm"><svg viewBox="0 0 24 24" stroke="#3f7cc4" fill="none" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M9 2h6"/></svg></div><div class="t">Cron + job chaining <span style="font-size:11px;color:var(--blue-d);font-weight:600">— unattended pipelines</span></div></div>
+      <div class="d" style="margin-top:8px;font-size:13px">Scheduled, auto-approved runs chained via <b>context_from</b> into real pipelines: <b>collect → analyze → deliver</b>.</div>
+    </div>
+
+    <div class="box plain" style="left:606px;top:284px;width:540px;height:148px;padding:13px 16px">
+      <div class="t" style="font-size:15px;margin-bottom:10px">🎛️ &nbsp;What you actually control</div>
+      <span class="pill2"><b>who</b> claims a task</span>
+      <span class="pill2"><b>how many</b> run at once</span>
+      <span class="pill2"><b>which</b> tools per agent</span>
+      <span class="pill2"><b>where</b> code executes</span>
+      <span class="pill2"><b>what</b> needs approval</span>
+      <span class="pill2"><b>when</b> it runs</span>
+    </div>
+  </div>
+
+  <div class="fbar"><span>Control = <b>which feature owns each layer</b> &mdash; flat delegation today, pipelines via cron chaining.</span></div>
+  <div class="fnote">Hermes Agent · Nous Research · design ref: datasciencedojo</div>
+</div>
+</body></html>
